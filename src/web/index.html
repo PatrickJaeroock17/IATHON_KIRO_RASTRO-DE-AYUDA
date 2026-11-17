@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rastro de Ayuda</title>
+  <style>
+    :root { --fondo:#0f0b1a; --tarjeta:#1a1330; --morado:#8b5cf6; --naranja:#f97316; --texto:#f5f3ff; }
+    * { box-sizing: border-box; }
+    body { margin:0; min-height:100vh; display:grid; place-items:center; background:var(--fondo); color:var(--texto); font-family:system-ui,sans-serif; }
+    main { max-width:28rem; margin:1rem; padding:2rem; text-align:center; background:var(--tarjeta); border:1px solid var(--morado); border-radius:1rem; }
+    h1 { color:var(--naranja); }
+    button { padding:.6rem 1.2rem; color:var(--texto); background:var(--morado); border:0; border-radius:.5rem; font-size:1rem; cursor:pointer; }
+    button:focus-visible { outline:3px solid var(--naranja); outline-offset:2px; }
+  </style>
+</head>
+<body>
+  <main>
+    <svg width="80" viewBox="0 0 64 72" role="img" aria-label="Fantasma">
+      <path d="M32 4C16 4 6 16 6 32v36l9-8 8 8 9-8 9 8 8-8 9 8V32C58 16 48 4 32 4z" fill="#f5f3ff"/>
+      <circle cx="23" cy="30" r="4" fill="#0f0b1a"/>
+      <circle cx="41" cy="30" r="4" fill="#0f0b1a"/>
+    </svg>
+    <h1>Rastro de Ayuda</h1>
+    <p>Base lista y desplegada. Los datos de esta demostración son simulados.</p>
+    <button id="probar">Probar la API</button>
+    <p id="estado" aria-live="polite"></p>
+  </main>
+  <script>
+    document.getElementById("probar").addEventListener("click", async () => {
+      const estado = document.getElementById("estado");
+      try {
+        const r = await fetch("/health");
+        const d = await r.json();
+        estado.textContent = "La API responde: " + d.status;
+      } catch (e) {
+        estado.textContent = "No se pudo conectar con la API.";
+      }
+    });
+  </script>
+</body>
+</html>

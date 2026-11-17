@@ -1,0 +1,76 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Rastro de Ayuda - Kiro IAthon
+
+Parameters:
+  BedrockModelId:
+    Type: String
+    Default: ""
+    Description: ID del modelo de Bedrock habilitado en la cuenta (se pasa con deploy)
+
+  TeamId:
+    Type: String
+    Default: ""
+    Description: Id público del equipo en el portal (por ejemplo T009)
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Timeout: 20
+    MemorySize: 256
+    Environment:
+      Variables:
+        TABLE_NAME: !Ref AidTable
+        BEDROCK_MODEL_ID: !Ref BedrockModelId
+        TEAM_ID: !Ref TeamId
+
+Resources:
+  AidTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: handlers.api.handler
+      Description: API HTTP y frontend (/app)
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref AidTable
+        - Statement:
+            - Effect: Allow
+              Action:
+                - bedrock:InvokeModel
+                - bedrock:InvokeModelWithResponseStream
+              Resource: "*"
+      Events:
+        Root:
+          Type: HttpApi
+          Properties:
+            Path: /
+            Method: ANY
+        Proxy:
+          Type: HttpApi
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+
+Outputs:
+  ApiUrl:
+    Description: URL base de la API
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com"
+  WebUrl:
+    Description: URL pública del frontend (ApiUrl + /app, sin barra final)
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/app"

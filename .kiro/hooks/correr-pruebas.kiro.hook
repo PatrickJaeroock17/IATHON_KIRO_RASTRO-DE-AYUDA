@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Correr pruebas (manual)",
+  "description": "Ejecuta pytest y explica la causa raíz de cualquier fallo",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Ejecuta `python -m pytest -q`. Si algo falla, explica la causa raíz en 3 líneas y propone el arreglo, y espera mi confirmación antes de editar. Si todo pasa, responde solo cuántas pruebas pasaron."
+  }
+}

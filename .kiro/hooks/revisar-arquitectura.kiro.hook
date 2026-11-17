@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "name": "Revisar arquitectura al guardar",
+  "description": "Al guardar un archivo Python de src/, lo compara con las reglas de .kiro/steering/architecture.md y avisa si rompe alguna",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": ["src/**/*.py"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Revisa el archivo que se acaba de guardar contra .kiro/steering/architecture.md. Si rompe alguna regla (capas, imports prohibidos, reglas de negocio fuera del servicio, eventos editados o borrados), indícala en una lista corta con el número de línea. No edites ningún archivo. Si todo está bien, responde solo: Arquitectura OK."
+  }
+}

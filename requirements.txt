@@ -1,0 +1,3 @@
+pytest>=8.0
+hypothesis>=6.100
+boto3>=1.34

@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Actualizar bitácora de uso de Kiro (manual)",
+  "description": "Rellena docs/KIRO_USO.md con la evidencia real de specs, steering, hooks, MCP y agentes del repositorio",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Lee .kiro/specs, .kiro/steering, .kiro/hooks, .kiro/agents, .kiro/skills y .kiro/settings/mcp.json, y actualiza docs/KIRO_USO.md: qué specs existen, cuántos requisitos y tareas tiene cada uno, y qué steering, hooks, servidores MCP, agentes y skills se usan y para qué. Escribe solo lo que exista en el repositorio; no inventes nada ni borres la sección de errores corregidos a mano."
+  }
+}

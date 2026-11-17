@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.hypothesis/
+.aws-sam/
+samconfig.toml
+.env
+*.db
+*.zip
+node_modules/
+.DS_Store
